@@ -1,4 +1,4 @@
-package com.tfliteflutter.tflite_flutter_helper
+package com.xmartlabs.tflite_flutter_helper
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin
 import io.flutter.plugin.common.MethodCall
@@ -37,7 +37,7 @@ enum class SoundStreamStatus {
 	Stopped,
 }
 
-const val METHOD_CHANNEL_NAME = "com.tfliteflutter.tflite_flutter_helper:methods"
+const val METHOD_CHANNEL_NAME = "com.xmartlabs.tflite_flutter_helper:methods"
 
 /** TfliteFlutterHelperPlugin */
 class TfliteFlutterHelperPlugin : FlutterPlugin,
@@ -46,7 +46,7 @@ class TfliteFlutterHelperPlugin : FlutterPlugin,
 		ActivityAware {
 
 
-	private val LOG_TAG = "TfLiteFlutterHelperPlugin"
+	private val LOG_TAG = "TfliteFlutterHelperPlugin"
 	private val AUDIO_RECORD_PERMISSION_CODE = 14887
 	private val DEFAULT_SAMPLE_RATE = 16000
 	private val DEFAULT_BUFFER_SIZE = 8192
@@ -140,14 +140,14 @@ class TfliteFlutterHelperPlugin : FlutterPlugin,
 		}
 	}
 
-	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>?,
-											grantResults: IntArray?): Boolean {
+	override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>,
+											grantResults: IntArray): Boolean {
 		when (requestCode) {
 			AUDIO_RECORD_PERMISSION_CODE -> {
-				if (grantResults != null) {
-					permissionToRecordAudio = grantResults.isNotEmpty() &&
-							grantResults[0] == PackageManager.PERMISSION_GRANTED
-				}
+
+				permissionToRecordAudio = grantResults.isNotEmpty() &&
+						grantResults[0] == PackageManager.PERMISSION_GRANTED
+
 				completeInitializeRecorder()
 				return true
 			}

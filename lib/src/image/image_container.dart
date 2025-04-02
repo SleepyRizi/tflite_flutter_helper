@@ -1,5 +1,5 @@
 import 'package:camera/camera.dart';
-import 'package:image/image.dart';
+import 'package:image/image.dart' as img;
 import 'package:tflite_flutter/tflite_flutter.dart';
 import 'package:tflite_flutter_helper/src/image/base_image_container.dart';
 import 'package:tflite_flutter_helper/src/image/image_conversions.dart';
@@ -7,13 +7,13 @@ import 'package:tflite_flutter_helper/src/tensorbuffer/tensorbuffer.dart';
 import 'package:tflite_flutter_helper/src/image/color_space_type.dart';
 
 class ImageContainer extends BaseImageContainer {
-  late final Image _image;
+  late final img.Image _image;
 
-  ImageContainer._(Image image) {
+  ImageContainer._(img.Image image) {
     this._image = image;
   }
 
-  static ImageContainer create(Image image) {
+  static ImageContainer create(img.Image image) {
     return ImageContainer._(image);
   }
 
@@ -24,15 +24,7 @@ class ImageContainer extends BaseImageContainer {
 
   @override
   ColorSpaceType get colorSpaceType {
-    int len = _image.data.length;
-    bool isGrayscale = true;
-    for (int i = (len / 4).floor(); i < _image.data.length; i++) {
-      if (_image.data[i] != 0) {
-        isGrayscale = false;
-        break;
-      }
-    }
-    if (isGrayscale) {
+    if (image.numChannels == 1) {
       return ColorSpaceType.GRAYSCALE;
     } else {
       return ColorSpaceType.RGB;
@@ -40,7 +32,7 @@ class ImageContainer extends BaseImageContainer {
   }
 
   @override
-  TensorBuffer getTensorBuffer(TfLiteType dataType) {
+  TensorBuffer getTensorBuffer(TensorType dataType) {
     TensorBuffer buffer = TensorBuffer.createDynamic(dataType);
     ImageConversions.convertImageToTensorBuffer(image, buffer);
     return buffer;
@@ -50,7 +42,7 @@ class ImageContainer extends BaseImageContainer {
   int get height => _image.height;
 
   @override
-  Image get image => _image;
+  img.Image get image => _image;
 
   @override
   CameraImage get mediaImage => throw UnsupportedError(

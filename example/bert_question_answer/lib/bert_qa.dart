@@ -9,7 +9,7 @@ class BertQA {
 
   final _modelPath = "lite-model_mobilebert_1_metadata_1.tflite";
 
-  BertQA () {
+  BertQA() {
     createClassifier();
   }
 
