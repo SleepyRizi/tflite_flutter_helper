@@ -14,21 +14,21 @@ plugins {
 }
 
 android {
-    namespace "org.tensorflow.lite.support"   // <- THE missing line
-    compileSdk 34                             // same as your app; 34 is fine
+    namespace "org.tensorflow.lite.support"
+    compileSdk 34
 
-    defaultConfig {
-        minSdk 21                             // Google’s new minimum
-        consumerProguardFiles "consumer-rules.pro"
+    defaultConfig { minSdk 21 }
+
+    // ---- NEW: make both Kotlin & Java generate Java-17 bytecode ----
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_17
+        targetCompatibility JavaVersion.VERSION_17
     }
-
-    // If you keep Kotlin sources in src/main/kotlin (original structure)
-    sourceSets {
-        main.java.srcDirs += 'src/main/kotlin'
+    kotlinOptions {
+        jvmTarget = '17'
     }
 }
 
 dependencies {
-    // Flutter’s toolchain already injects Kotlin stdlib 1.9.x, but it’s fine
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk8"
 }
